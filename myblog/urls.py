@@ -15,8 +15,19 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from myblog import settings
+from django.views.static import serve
+from blog import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'', include('blog.urls'))
+    url(r'^login/', views.log_in, name='login'),
+    url(r'^register/', views.register, name='register'),
+    url(r'^captcha/', views.get_captcha, name='captcha'),
+    url(r'blog/', include('blog.urls')),
+    url(r'^$', views.index, name='index'),
+
+    # 配置media
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT})
+
 ]

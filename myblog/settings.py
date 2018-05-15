@@ -125,3 +125,10 @@ STATICFILES_DIR = [
 ]
 
 AUTH_USER_MODEL = 'blog.UserInfo'
+
+# 配置media
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = (
+    os.path.join(BASE_DIR, 'blog/media')
+)

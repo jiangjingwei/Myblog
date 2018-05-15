@@ -44,6 +44,9 @@ class Article(models.Model):
     category = models.ForeignKey('Category', null=True, verbose_name='分类')
     tags = models.ManyToManyField(to='Tag', through='Article2Tag', through_fields=['article', 'tags'])
 
+    def __str__(self):
+        return self.title
+
 
 class ArticleDetail(models.Model):
     """ 文章内容 """

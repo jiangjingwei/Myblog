@@ -1,90 +1,55 @@
+{% extends 'blog/login.html' %}
 {% load staticfiles %}
 
-<!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+{% block btn %}
+    <a href="{% url 'login' %}" class="btn btn-primary refer-login" role="button">登陆</a>
 
-    <title>注册</title>
+{% endblock btn %}
 
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+{% block content %}
+    <h2 class="form-signin-heading">Please sign up </h2>
+    <label for="inputUsername" class="sr-only">Username</label>
+    {{ register_form.username }}
+    <p class="error-msg"></p>
 
-    <!-- Custom styles for this template -->
-    <link href="{% static 'dist/css/signin.css' %}" rel="stylesheet">
+    <label for="inputPassword" class="sr-only">Password</label>
+    {{ register_form.password }}
+    <p class="error-msg"></p>
 
+    <label for="inputRepeatPassword" class="sr-only">RepeatPassword</label>
+    {{ register_form.rePassword }}
+    <p class="error-msg"></p>
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <label for="inputEmail" class="sr-only">Email</label>
+    {{ register_form.email }}
+    <p class="error-msg"></p>
 
-      <style>
-          .inputAvatar{
-              opacity: 0;
-          }
-          .avatar-label{
-              width: 60px;
-              height: 60px;
-              clip: auto;
-              {#z-index: 9999;#}
-          }
+    <label for="inputPhone" class="sr-only">Phone</label>
+    {{ register_form.phone }}
+    <p class="error-msg"></p>
 
-          .avatar-label img{
-              width: 100%;
-          }
-
-      </style>
-  </head>
-
-  <body>
-
-    <div class="container">
-
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign up</h2>
-        <label for="inputUsername" class="sr-only">Username</label>
-        <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
-          
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-          
-        <label for="inputRepeatPassword" class="sr-only">RepeatPassword</label>
-        <input type="password" id="inputRepeatPassword" class="form-control" placeholder="RepeatPassword" required>
-          
-        <label for="inputEmail" class="sr-only">Email</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email">
-          
-        <label for="inputPhone" class="sr-only">Phone</label>
-        <input type="text" id="inputPhone" class="form-control" placeholder="Phone">
-        <div class="avatar-con">
-            <label for="inputAvatar" class="sr-only avatar-label"><img src="{% static 'images/default.jpg' %}" alt=""></label>
-            <input type="file" id="inputAvatar" class="form-control inputAvatar" placeholder="Avatar">
-
-        </div>
-
-          
+    <div class="captcha-con">
         <label for="inputValidCode" class="sr-only">ValidCode</label>
-        <input type="text" id="inputValidCode" class="form-control" placeholder="ValidCode">
+        {{ register_form.captcha }}
+        <img src="{% url 'captcha' %}" alt="" class="captcha-img" id="captcha-img">
+        <p class="error-msg"></p>
+
+    </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="button" id="sign-up">Sign up</button>
+    {% csrf_token %}
+{% endblock %}
 
 
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
-      </form>
+{#<script>#}
+    {#CSRFtoken#}
+{#    $.ajaxSetup({#}
+{#        data: {csrfmiddlewaretoken: '{{ csrf_token }}'}#}
+{#    });#}
+{##}
+{#</script>#}
 
-    </div> <!-- /container -->
+
   
 
-  </body>
-</html>
+

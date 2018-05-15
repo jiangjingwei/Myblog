@@ -1,0 +1,66 @@
+/*设置顶部头像*/
+.navbar-nav .dropdown .avatar{
+    padding: 10px;
+
+}
+
+/*个人页面头像*/
+
+.camera-icon{
+    font-size: 40px;
+}
+
+
+.home-avatar{
+    position: relative;
+    overflow: hidden;
+    width: 168px;
+    height: 168px;
+    border-radius: 10px;
+}
+
+.home-avatar img{
+    width: 168px;
+    position: absolute;
+
+}
+
+.home-avatar .img-choice{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    opacity: 0;
+    z-index: 9999;
+}
+
+.home-avatar span{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -20px;
+    margin-top: -40px;
+    color: white;
+    z-index: 9998;
+}
+
+.home-avatar p{
+    position: absolute;
+    top: 60%;
+    left: 25%;
+    font-size: 14px;
+    z-index: 9998;
+    color: white;
+}
+
+.home-avatar .mask{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: black;
+    opacity: 0.4;
+}
+
+/*保存按钮*/
+.btn-default{
+    float: right;
+}
