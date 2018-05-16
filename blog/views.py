@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from blog.forms import RegisterForm
 from PIL import Image, ImageDraw, ImageFont
 import random
@@ -9,7 +9,12 @@ from io import BytesIO
 from myblog import settings
 from django.contrib import auth
 from django.http import JsonResponse
-from blog.models import UserInfo
+from blog.models import UserInfo, Blog, Article, Category, Tag
+from django.db.models import Count
+
+import markdown
+from markdown.extensions.toc import TocExtension
+from django.utils.text import slugify
 
 
 # Create your views here.
@@ -17,10 +22,53 @@ from blog.models import UserInfo
 
 def index(request):
     if request.session.get('username'):
+        # 当前用户
+        user = UserInfo.objects.get(username=request.user)
 
-        return render(request, 'blog/index.html')
+        # 当前用户的blog
+        current_blog = user.blog
+
+        # 当前用户下所有的文章列表
+        article_list = Article.objects.filter(user=user)
+
+        # 当前blog下所有的分类和个数
+        cate_list = Category.objects.filter(blog=current_blog).values_list('name').annotate(Count('name'))
+
+        # 当前blog下所有的标签
+
+        tags_list = Tag.objects.filter(blog=current_blog)
+
+        return render(request, 'blog/index.html', locals())
     else:
         return redirect('/login/')
+
+
+def article_detail(request, pk):
+    user = UserInfo.objects.get(username=request.user)
+
+    current_blog = user.blog
+
+    # 阅读+1
+    article = Article.objects.get(pk=pk)
+    article.views_num += 1
+    article.save()
+
+    tag_list = Tag.objects.filter(article2tag__article=article)
+
+    # 文章详情内容
+    # content = article.detail.content
+
+    md = markdown.Markdown(extensions=[
+        'markdown.extensions.extra',
+        'markdown.extensions.codehilite',
+        # 'markdown.extensions.toc',
+        TocExtension(slugify=slugify)
+    ])
+
+    article.detail.content = md.convert(article.detail.content)
+    article.detail.toc = md.toc
+
+    return render(request, 'blog/articleDetail.html', locals())
 
 
 def log_in(request):

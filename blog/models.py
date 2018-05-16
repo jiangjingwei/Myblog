@@ -27,6 +27,9 @@ class Blog(models.Model):
     title = models.CharField(max_length=32, verbose_name='个人博客标题')
     theme = models.CharField(max_length=32, verbose_name='博客主题')
 
+    def __str__(self):
+        return self.title
+
 
 class Article(models.Model):
     """ 文章 """
@@ -52,11 +55,17 @@ class ArticleDetail(models.Model):
     """ 文章内容 """
     content = models.TextField()
 
+    def __str__(self):
+        return self.content
+
 
 class Category(models.Model):
     """ 分类 """
     name = models.CharField(max_length=32, verbose_name='分类名称')
     blog = models.ForeignKey('Blog', verbose_name='所属博客')
+
+    def __str__(self):
+        return self.name
 
 
 class Article2Tag(models.Model):
@@ -72,6 +81,9 @@ class Tag(models.Model):
     """ 标签 """
     name = models.CharField(max_length=32, verbose_name='标签名称')
     blog = models.ForeignKey('Blog', verbose_name='所属博客')
+
+    def __str__(self):
+        return self.name
 
 
 class Comment(models.Model):
