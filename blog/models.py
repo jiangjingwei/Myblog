@@ -19,6 +19,9 @@ class UserInfo(AbstractUser):
     blog = models.OneToOneField('Blog', null=True)
     register_time = models.DateField(auto_now_add=True, verbose_name='注册时间')
 
+    def __str__(self):
+        return self.username
+
 
 class Blog(models.Model):
     """ 个人站点 """
@@ -92,7 +95,10 @@ class Comment(models.Model):
     user = models.ForeignKey('UserInfo', verbose_name='评论者')
     content = models.CharField(max_length=255, verbose_name='评论内容')
     create_time = models.DateField(auto_now_add=True)
-    parent_comment = models.ForeignKey('self', null=True, verbose_name='父评论')
+    parent_comment = models.ForeignKey('self', blank=True, null=True, verbose_name='父评论')
+
+    # def __str__(self):
+    #     return self.user
 
 
 class VoteUpDown(models.Model):

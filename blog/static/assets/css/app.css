@@ -559,6 +559,11 @@ h1 span {
     display: inline-block;
     font-size: 16px;
     margin-left: 15px;
+
+}
+
+.vote-active{
+    color: #10D07A;
 }
 
 

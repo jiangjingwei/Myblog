@@ -20,12 +20,16 @@ from django.views.static import serve
 from blog import views
 
 urlpatterns = [
+    url(r'test/', views.test),
     url(r'^admin/', admin.site.urls),
     url(r'^login/', views.log_in, name='login'),
     url(r'^register/', views.register, name='register'),
     url(r'^captcha/', views.get_captcha, name='captcha'),
-    url(r'blog/', include('blog.urls')),
-    url(r'^$', views.index, name='index'),
+    url(r'^blog/', include('blog.urls')),
+    url(r'', views.home_page),
+    url(r'^(?P<username>\w+)/(?P<num>\d+)/$', views.home_page),
+
+    url(r'^vote_up/$', views.vote_up, name='vote_up'),
 
     # 配置media
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT})

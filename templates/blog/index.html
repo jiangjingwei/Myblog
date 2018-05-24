@@ -7,7 +7,7 @@
 
 
 {% block content %}
-    {% for article in article_list %}
+    {% for article in contacts %}
 
         <article class="am-g blog-entry-article">
             <div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-img">
@@ -16,23 +16,41 @@
             <div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-text">
                 <span><a href="" class="blog-color">article &nbsp;</a></span>
                 <span> @{{ article.user.nickname }} &nbsp;</span>
-                <span>{{ article.create_date|date:'Y/m/d' }}</span>
-
-                    <a href="" class="vote-up"><i class="fa fa-thumbs-o-up"></i>&nbsp;赞</a>
-                    <a href="" class="vote-down"><i class="fa fa-thumbs-o-down"></i>&nbsp;踩</a>
-
-
-                <h1><a href="{% url 'articleDetail' article.pk %}">{{ article.title }}</a></h1>
+                <span>{{ article.create_date|date:'Y/m/d' }}</span>&nbsp;&nbsp;&nbsp;
+                <a href="javascript:void(0)" class="vote-up" article="{{ article.pk }}"><i class="fa fa-thumbs-o-up"></i>&nbsp;赞</a>&nbsp;&nbsp;
+                <a href="javascript:void(0)" class="vote-down" article="{{ article.pk }}"><i class="fa fa-thumbs-o-down"></i>&nbsp;踩</a>
+                <h1><a href="{% url 'articleDetail' article.pk %}" id="article-title">{{ article.title }}</a></h1>
                 <p>{{ article.desc|slice:'49' }}</p>
                 <p><a href="" class="blog-continue">continue reading</a></p>
             </div>
         </article>
+
+    {% empty %}
+        <h3>暂无文章！</h3>
     {% endfor %}
 
-    <ul class="am-pagination">
-          <li class="am-pagination-prev"><a href="">&laquo; Prev</a></li>
-          <li class="am-pagination-next"><a href="">Next &raquo;</a></li>
-        </ul>
+{#    <ul class="am-pagination">#}
+{#          <li class="am-pagination-prev"><a href="">&laquo; Prev</a></li>#}
+{#          <li class="am-pagination-next"><a href="">Next &raquo;</a></li>#}
+{#    </ul>#}
+    <ul class="am-pagination am-pagination-centered">
+
+         {% if contacts.has_previous %}
+            <li><a href="?page={{ contacts.previous_page_number }}">&laquo;</a></li>
+         {% endif %}
+
+         {% for page in paginator.page_range %}
+         <li><a href="?page={{ page }}">{{ page }}</a></li>
+         {% endfor %}
+
+         {% if contacts.has_next %}
+            <li><a href="?page={{ contacts.next_page_number }}">&raquo;</a></li>
+         {% endif %}
+
+
+    </ul>
+
+
 {% endblock %}
 
 
@@ -41,7 +59,7 @@
         <div class="blog-sidebar-widget blog-bor">
             <h2 class="blog-text-center blog-title"><span>About ME</span></h2>
             <img src="{% static 'images/369.jpg' %}" alt="about me" class="blog-entry-img">
-            <p>{{ request.user.nickname }}</p>
+            <p userid="{{ request.user.pk }}" id="user-id">{{ request.user.nickname }}</p>
             <p>
                 我是Python语言的粉丝
             </p>
@@ -61,7 +79,7 @@
             <h2 class="blog-title"><span>CATEGORY</span></h2>
             <ul class="am-list">
                 {% for cate in cate_list %}
-                    <li><a href="#">{{ cate.0 }}  ({{ cate.1 }})</a></li>
+                    <li><a href="{% url 'category' cate.1 %}">{{ cate.0 }}  ({{ cate.2 }})</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -70,7 +88,7 @@
             <h2 class="blog-title"><span>TAG cloud</span></h2>
             <div class="am-u-sm-12 blog-clear-padding">
                 {% for tag in tags_list %}
-                    <a href="" class="blog-tag">{{ tag.name }}</a>
+                    <a href="{% url 'tag' tag.pk%}" class="blog-tag">{{ tag.name }}</a>
                 {% endfor %}
 
 
@@ -81,3 +99,5 @@
     </div>
 
 {% endblock sidebar %}
+
+
